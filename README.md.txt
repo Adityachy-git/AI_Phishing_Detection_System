@@ -1,6 +1,6 @@
-# 🛡️ AI-Powered Phishing Website & Email Detection System
+ 🛡️ AI-Powered Phishing Website & Email Detection System
 
-## 📌 Project Overview
+📌 Project Overview
 
 This project is an AI-powered cybersecurity solution designed to detect phishing websites and phishing emails using Machine Learning and real-time security analysis.
 
@@ -10,55 +10,52 @@ The project is being developed as a Final Year (TY) Computer Science project wit
 
 ---
 
-## 🎯 Objectives
+🎯 Objectives
 
-- Detect phishing websites using Machine Learning.
-- Detect phishing emails using NLP and ML.
-- Perform real-time URL feature extraction.
-- Analyze website security characteristics.
-- Generate an explainable threat score.
-- Build a modern web dashboard.
-- Develop a Chrome Extension (Future Scope).
+ Detect phishing websites using Machine Learning.
+ Detect phishing emails using NLP and ML.
+ Perform real-time URL feature extraction.
+ Analyze website security characteristics.
+ Generate an explainable threat score.
+ Build a modern web dashboard.
+ Develop a Chrome Extension (Future Scope).
 
----
+🛠️ Tech Stack
 
-## 🛠️ Tech Stack
-
-### Programming Language
+# Programming Language
 - Python
 
-### Machine Learning
+# Machine Learning
 - Scikit-learn
 - Pandas
 - NumPy
 - Joblib
 
-### Backend
+# Backend
 - Flask
 
-### Frontend
+# Frontend
 - HTML
 - CSS
 - JavaScript
 - Bootstrap
 
-### Database
+# Database
 - MySQL
 
-### APIs (Planned)
+# APIs (Planned)
 - WHOIS Lookup
 - VirusTotal API
 - Google Safe Browsing API
 
-### Version Control
+# Version Control
 - Git
 - GitHub
 
 ---
 
-## 📂 Project Structure
+# 📂 Project Structure
 
-```text
 AI-Phishing-Detection-System/
 │
 ├── backend/
@@ -85,27 +82,25 @@ AI-Phishing-Detection-System/
 ├── requirements.txt
 │
 └── README.md
-```
 
----
 
 ## 🚀 Features
 
-### ✅ Website Phishing Detection
+# ✅ Website Phishing Detection
 
 - URL Analysis
 - Feature Extraction
 - Machine Learning Prediction
 - Threat Classification
 
-### 🚧 Email Phishing Detection
+# 🚧 Email Phishing Detection
 
 - Email Content Analysis
 - Suspicious Link Detection
 - Sender Analysis
 - NLP-based Classification
 
-### 🚧 Threat Analysis
+# 🚧 Threat Analysis
 
 - Threat Score
 - Explainable AI
@@ -114,7 +109,7 @@ AI-Phishing-Detection-System/
 
 ---
 
-## 🧠 Machine Learning
+# 🧠 Machine Learning
 
 Current Algorithm:
 
@@ -126,9 +121,7 @@ Future Models:
 - LightGBM
 - CatBoost
 
----
-
-## 🔍 Current Progress
+# 🔍 Current Progress
 
 - [x] Environment Setup
 - [x] GitHub Repository Created
@@ -142,36 +135,34 @@ Future Models:
 
 ---
 
-## 📈 Future Roadmap
+# 📈 Future Roadmap
 
-### Phase 1
+# Phase 1
 - Dataset Analysis
 - ML Model Training
 
-### Phase 2
+# Phase 2
 - Website Detection Engine
 
-### Phase 3
+# Phase 3
 - Email Detection Engine
 
-### Phase 4
+# Phase 4
 - Flask Backend
 
-### Phase 5
+# Phase 5
 - Frontend Dashboard
 
-### Phase 6
+# Phase 6
 - Explainable AI
 
-### Phase 7
+# Phase 7
 - Chrome Extension
 
-### Phase 8
+# Phase 8
 - Deployment
 
----
-
-## 🎯 Future Enhancements
+# 🎯 Future Enhancements
 
 - WHOIS Domain Lookup
 - SSL Certificate Verification
@@ -183,14 +174,12 @@ Future Models:
 - Chrome Extension
 - Cloud Deployment
 
----
 
-## 👨‍💻 Author
+ Author
 
-**Aditya Choudhary**
+Aditya Choudhary
 
 Bachelor of Science (Computer Science)
 
 Final Year Project
 
----
