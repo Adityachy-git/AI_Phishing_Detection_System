@@ -4,7 +4,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 import joblib
 
-df = pd.read_csv("datasets\PhiUSIIL_Phishing_URL_Dataset.csv")
+df = pd.read_csv("datasets/PhiUSIIL_Phishing_URL_Dataset.csv")
 
 # Remove text columns
 df = df.drop(columns=[
