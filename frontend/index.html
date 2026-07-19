@@ -11,43 +11,216 @@
     <title>AI Phishing Detection System</title>
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
 </head>
 
 <body>
 
-<div class="container">
+<!-- ====================== SIDEBAR ====================== -->
 
-    <h1>🛡 AI Phishing Detection System</h1>
+<div class="sidebar">
 
-    <p class="subtitle">
-        Detect phishing websites using Machine Learning and Cyber Security Analysis
-    </p>
+    <div class="logo">
 
-    <div class="card">
+        <i class="fa-solid fa-shield-halved"></i>
 
-        <input
-            type="text"
-            id="urlInput"
-            placeholder="Enter Website URL">
-
-        <button onclick="analyzeURL()">
-            Analyze URL
-        </button>
+        <h2>AI Shield</h2>
 
     </div>
 
-    <div id="loading" class="loading">
+    <ul class="menu">
 
-        Analyzing Website...
+        <li class="menu-item active"
+            onclick="showPage('dashboard')">
 
-    </div>
+            <i class="fa-solid fa-house"></i>
 
-    <div id="result"></div>
+            Dashboard
+
+        </li>
+
+        <li class="menu-item"
+            onclick="showPage('history')">
+
+            <i class="fa-solid fa-clock-rotate-left"></i>
+
+            Scan History
+
+        </li>
+
+        <li class="menu-item"
+            onclick="showPage('reports')">
+
+            <i class="fa-solid fa-file-lines"></i>
+
+            Reports
+
+        </li>
+
+        <li class="menu-item"
+            onclick="showPage('settings')">
+
+            <i class="fa-solid fa-gear"></i>
+
+            Settings
+
+        </li>
+
+    </ul>
 
 </div>
 
+<!-- ====================== MAIN CONTENT ====================== -->
+
+<div class="main-content">
+
+    <!-- ================= DASHBOARD PAGE ================= -->
+
+    <div id="dashboardPage">
+
+        <div class="container">
+
+            <h1>🛡 AI Phishing Detection System</h1>
+
+            <p class="subtitle">
+                Detect phishing websites using Machine Learning and Cyber Security Analysis
+            </p>
+
+            <div class="card">
+
+                <input
+                    type="text"
+                    id="urlInput"
+                    placeholder="Enter Website URL">
+
+                <button onclick="analyzeURL()">
+                    Analyze URL
+                </button>
+
+            </div>
+
+            <div id="loading" class="loading">
+
+                <div class="spinner"></div>
+
+                <p>Analyzing Website...</p>
+
+            </div>
+
+            <section id="result" class="result-section"></section>
+
+        </div>
+
+    </div>
+
+    <!-- ================= HISTORY PAGE ================= -->
+
+    <div id="historyPage" style="display:none;">
+
+        <div class="container">
+
+            <h1>🕒 Scan History</h1>
+
+            <button
+                id="clearHistory"
+                onclick="clearHistory()">
+
+                🗑 Clear History
+
+            </button>
+
+            <div id="historySection" class="history-section">
+
+                <div id="historyList">
+
+                    <p class="empty-history">
+
+                        No scans yet.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= REPORT PAGE ================= -->
+
+    <div id="reportsPage" style="display:none;">
+
+        <div class="container">
+
+            <h1>📄 Reports</h1>
+
+            <div class="card">
+
+    <h2>Reports</h2>
+
+    <button onclick="downloadReport()">
+
+        📄 Download PDF Report
+
+    </button>
+
+</div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= SETTINGS PAGE ================= -->
+
+    <div id="settingsPage" style="display:none;">
+
+        <div class="container">
+
+            <h1>⚙ Settings</h1>
+
+            <div class="card">
+
+                <p>
+
+                    <div class="card">
+
+    <h2>Appearance</h2>
+
+    <div class="theme-switch">
+
+        <span>🌙 Dark Mode</span>
+
+        <label class="switch">
+
+            <input
+                type="checkbox"
+                id="themeToggle"
+                onchange="toggleTheme()">
+
+            <span class="slider"></span>
+
+        </label>
+
+    </div>
+
+</div>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="script.js"></script>
+<script src="navigation.js"></script>
+<script src="theme.js"></script>
+<script src="reports.js"></script>
 
 </body>
 
