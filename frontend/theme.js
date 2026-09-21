@@ -1,50 +1,48 @@
-// ==============================
-// Theme Manager
-// ==============================
+// =========================================================
+//  AI SHIELD — Theme Manager
+// =========================================================
 
-function toggleTheme(){
+const THEME_KEY = 'ai-shield-theme';
 
+/**
+ * Apply theme to body and sync toggle state
+ * @param {string} theme - 'dark' | 'light'
+ */
+function applyTheme(theme) {
     const body = document.body;
+    const toggle = document.getElementById('themeToggle');
 
-    const darkMode =
-        document.getElementById("themeToggle").checked;
-
-    if(darkMode){
-
-        body.classList.add("light-mode");
-
-        localStorage.setItem("theme","light");
-
+    if (theme === 'light') {
+        body.classList.add('light-mode');
+        if (toggle) toggle.checked = false; // unchecked = light
+    } else {
+        body.classList.remove('light-mode');
+        if (toggle) toggle.checked = true;  // checked = dark (default)
     }
-
-    else{
-
-        body.classList.remove("light-mode");
-
-        localStorage.setItem("theme","dark");
-
-    }
-
 }
 
-window.addEventListener("DOMContentLoaded",()=>{
+/**
+ * Toggle handler — called from checkbox onchange
+ */
+function toggleTheme() {
+    const toggle = document.getElementById('themeToggle');
+    const isDark = toggle ? toggle.checked : true;
 
-    const savedTheme =
-        localStorage.getItem("theme");
+    const newTheme = isDark ? 'dark' : 'light';
+    applyTheme(newTheme);
+    localStorage.setItem(THEME_KEY, newTheme);
+}
 
-    const toggle =
-        document.getElementById("themeToggle");
+/**
+ * Initialize theme on page load
+ */
+function initTheme() {
+    const savedTheme = localStorage.getItem(THEME_KEY);
 
-    if(savedTheme==="light"){
+    // Default to dark if nothing saved
+    const theme = savedTheme || 'dark';
+    applyTheme(theme);
+}
 
-        document.body.classList.add("light-mode");
-
-        if(toggle){
-
-            toggle.checked=true;
-
-        }
-
-    }
-
-});
+// Run on DOM ready
+window.addEventListener('DOMContentLoaded', initTheme);

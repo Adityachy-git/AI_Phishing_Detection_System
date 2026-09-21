@@ -4,12 +4,15 @@ import pandas as pd
 
 from website_engine.url_analyzer import analyze_url
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 
 class ModelPredictor:
 
     def __init__(self):
 
         model_path = os.path.join(
+            BASE_DIR,
             "models",
             "phishing_model_custom.pkl"
         )
@@ -26,19 +29,12 @@ class ModelPredictor:
         phishing_probability = round(probabilities[1] * 100, 2)
 
         return {
-
-        "prediction": "PHISHING"
-        if prediction == 1
-        else "LEGITIMATE",
-
-        "confidence": round(max(probabilities) * 100, 2),
-
-        "legitimate_probability": legitimate_probability,
-
-        "phishing_probability": phishing_probability,
-
-        "features": features
-    }
+            "prediction": "PHISHING" if prediction == 1 else "LEGITIMATE",
+            "confidence": round(max(probabilities) * 100, 2),
+            "legitimate_probability": legitimate_probability,
+            "phishing_probability": phishing_probability,
+            "features": features
+        }
 
 
 if __name__ == "__main__":
