@@ -392,7 +392,7 @@ async function analyzeURL() {
     urlInput.classList.remove("threat-detected");
 
     try {
-        const response = await fetch("https://ai-phishing-detection-system-9c4u.onrender.com", {
+        const response = await fetch("https://ai-phishing-detection-system-9c4u.onrender.com/analyze", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ url: url })
@@ -568,7 +568,7 @@ ${body}`;
     try {
 
         const response = await fetch(
-            "https://ai-phishing-detection-system-9c4u.onrender.com",
+            "https://ai-phishing-detection-system-9c4u.onrender.com/analyze-email",
             {
                 method: "POST",
                 headers: {
