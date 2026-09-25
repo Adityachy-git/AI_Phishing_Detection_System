@@ -568,7 +568,7 @@ ${body}`;
     try {
 
         const response = await fetch(
-            "http://127.0.0.1:5000/analyze-email",
+            "https://ai-phishing-detection-system-9c4u.onrender.com",
             {
                 method: "POST",
                 headers: {
