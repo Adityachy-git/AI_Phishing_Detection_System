@@ -3744,3 +3744,260 @@ body.light-mode .analytics-url {
 
     opacity: 0.45;
 }
+/* ================================= */
+/* OCR PROGRESS                      */
+/* ================================= */
+
+.ocr-progress {
+    margin-top: 18px;
+    padding: 18px;
+
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.025);
+
+    text-align: center;
+}
+
+
+.ocr-progress .spinner {
+    width: 28px;
+    height: 28px;
+
+    margin: 0 auto 10px;
+
+    border: 3px solid rgba(56, 189, 248, 0.2);
+    border-top-color: #38bdf8;
+
+    border-radius: 50%;
+
+    animation: ocrSpin 0.8s linear infinite;
+}
+
+
+@keyframes ocrSpin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+.ocr-progress .loading-text {
+    margin: 0;
+
+    font-size: 13px;
+
+    opacity: 0.75;
+}
+
+
+/* ================================= */
+/* OCR PREVIEW + RESULT              */
+/* ================================= */
+
+.ocr-preview-wrap {
+
+    display: grid;
+
+    grid-template-columns: minmax(220px, 0.9fr)
+                           minmax(300px, 1.1fr);
+
+    gap: 18px;
+
+    margin-top: 18px;
+}
+
+
+/* ================================= */
+/* IMAGE PREVIEW                     */
+/* ================================= */
+
+.ocr-preview {
+
+    min-height: 280px;
+
+    padding: 10px;
+
+    border-radius: 12px;
+
+    background: rgba(0, 0, 0, 0.18);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+
+.ocr-preview img {
+
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    max-height: 420px;
+
+    object-fit: contain;
+
+    border-radius: 8px;
+}
+
+
+/* ================================= */
+/* OCR RESULT                        */
+/* ================================= */
+
+.ocr-result {
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.ocr-result label {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-bottom: 8px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+.ocr-result label i {
+    color: #38bdf8;
+}
+
+
+.ocr-textarea {
+
+    width: 100%;
+
+    min-height: 280px;
+
+    box-sizing: border-box;
+
+    resize: vertical;
+
+    padding: 13px;
+
+    border-radius: 10px;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    background: rgba(0, 0, 0, 0.15);
+
+    color: inherit;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    outline: none;
+}
+
+
+.ocr-textarea:focus {
+
+    border-color: rgba(56, 189, 248, 0.55);
+
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.08);
+}
+
+
+/* ================================= */
+/* OCR ACTION BUTTONS                */
+/* ================================= */
+
+.ocr-actions {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 12px;
+}
+
+
+.ocr-actions button {
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.ocr-actions button:hover {
+
+    transform: translateY(-1px);
+}
+
+
+/* ================================= */
+/* OCR RESPONSIVE                    */
+/* ================================= */
+
+@media (max-width: 800px) {
+
+    .ocr-preview-wrap {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .ocr-preview {
+
+        min-height: 200px;
+
+    }
+
+    .ocr-textarea {
+
+        min-height: 220px;
+
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .email-ocr-section {
+
+        padding: 15px;
+
+    }
+
+    .ocr-actions {
+
+        flex-direction: column;
+
+    }
+
+    .ocr-actions button {
+
+        width: 100%;
+
+    }
+
+}

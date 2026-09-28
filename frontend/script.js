@@ -1199,6 +1199,8 @@ function clearEmailScanner() {
     document.getElementById("emailResult").innerHTML = "";
 
     window.latestEmailScan = null;
+
+    clearOcrSection();
 }
 
 
@@ -1228,7 +1230,7 @@ window.onload = () => {
 
 
 /* ============================= */
-/* EMAIL SCREENSHOT LISTENER     */
+/* EMAIL SCREENSHOT OCR           */
 /* ============================= */
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -1242,21 +1244,760 @@ document.addEventListener("DOMContentLoaded", function () {
 
     screenshotInput.addEventListener(
         "change",
-        function () {
-
-            const file = this.files[0];
-
-            if (!file) {
-                return;
-            }
-
-            console.log(
-                "Email screenshot selected:",
-                file.name
-            );
-
-            // OCR will be added in the next step.
-        }
+        handleEmailScreenshot
     );
 
 });
+
+
+/* ============================= */
+/* START OCR                      */
+/* ============================= */
+
+async function handleEmailScreenshot(event) {
+
+    const file = event.target.files[0];
+
+    if (!file) {
+        return;
+    }
+
+
+    /*
+     * Validate image
+     */
+
+    if (!file.type.startsWith("image/")) {
+
+        alert("Please upload a valid image.");
+
+        return;
+    }
+
+
+    /*
+     * Elements
+     */
+
+    const progress =
+        document.getElementById("ocrProgress");
+
+    const progressText =
+        document.getElementById("ocrProgressText");
+
+    const previewWrap =
+        document.getElementById("ocrPreviewWrap");
+
+    const previewImage =
+        document.getElementById("ocrPreviewImage");
+
+    const extractedText =
+        document.getElementById("ocrExtractedText");
+
+
+    /*
+     * Show image preview
+     */
+
+    if (previewImage) {
+
+        const imageURL =
+            URL.createObjectURL(file);
+
+        previewImage.src = imageURL;
+    }
+
+
+    /*
+     * Show progress
+     */
+
+    if (progress) {
+
+        progress.style.display = "block";
+    }
+
+    if (previewWrap) {
+
+        previewWrap.style.display = "none";
+    }
+
+    if (extractedText) {
+
+        extractedText.value = "";
+    }
+
+
+    /*
+     * Initial message
+     */
+
+    if (progressText) {
+
+        progressText.textContent =
+            "Preparing OCR engine...";
+    }
+
+
+    try {
+
+        console.log(
+            "Starting OCR:",
+            file.name
+        );
+
+
+        /*
+         * Tesseract OCR
+         */
+
+        const ocrResult =
+            await Tesseract.recognize(
+
+                file,
+
+                "eng",
+
+                {
+
+                    logger: function (info) {
+
+                        console.log(info);
+
+
+                        /*
+                         * Loading
+                         */
+
+                        if (
+                            info.status ===
+                            "loading tesseract core"
+                        ) {
+
+                            if (progressText) {
+
+                                progressText.textContent =
+                                    "Loading OCR engine...";
+                            }
+
+                        }
+
+
+                        /*
+                         * Language
+                         */
+
+                        else if (
+                            info.status ===
+                            "loading language traineddata"
+                        ) {
+
+                            if (progressText) {
+
+                                progressText.textContent =
+                                    "Loading English language data...";
+                            }
+
+                        }
+
+
+                        /*
+                         * Recognition
+                         */
+
+                        else if (
+                            info.status ===
+                            "recognizing text"
+                        ) {
+
+                            const percent =
+                                Math.round(
+                                    info.progress * 100
+                                );
+
+
+                            if (progressText) {
+
+                                progressText.textContent =
+                                    `Extracting text... ${percent}%`;
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+
+        /*
+         * Get extracted text
+         */
+
+        const text =
+            ocrResult.data.text.trim();
+
+
+        console.log(
+            "OCR extracted text:",
+            text
+        );
+
+
+        /*
+         * Hide progress
+         */
+
+        if (progress) {
+
+            progress.style.display = "none";
+        }
+
+
+        /*
+         * Check result
+         */
+
+        if (!text) {
+
+            alert(
+                "No readable text was found in the screenshot."
+            );
+
+            return;
+        }
+
+
+        /*
+         * Put raw OCR text
+         * into textarea
+         */
+
+        if (extractedText) {
+
+            extractedText.value = text;
+        }
+
+
+        /*
+         * Show preview/result
+         */
+
+        if (previewWrap) {
+
+            previewWrap.style.display = "grid";
+        }
+
+
+        /*
+         * Success message
+         */
+
+        const emailResult =
+            document.getElementById("emailResult");
+
+        if (emailResult) {
+
+            emailResult.innerHTML = `
+                <div class="recommend-card">
+
+                    <h3>
+                        <i class="fa-solid fa-circle-check"></i>
+                        Screenshot Scanned Successfully
+                    </h3>
+
+                    <p>
+                        Email text was extracted successfully.
+                    </p>
+
+                    <p>
+                        Review the extracted text and click
+                        <b>Use This Text</b>.
+                    </p>
+
+                </div>
+            `;
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "OCR Error:",
+            error
+        );
+
+
+        /*
+         * Hide progress
+         */
+
+        if (progress) {
+
+            progress.style.display = "none";
+        }
+
+
+        alert(
+            "Unable to read the screenshot. Please try a clearer image."
+        );
+
+    }
+
+}
+
+
+/* ============================= */
+/* APPLY OCR TEXT                */
+/* ============================= */
+
+function applyOcrTextToEmail() {
+
+    const extractedText =
+        document.getElementById(
+            "ocrExtractedText"
+        );
+
+
+    if (!extractedText) {
+        return;
+    }
+
+
+    const text =
+        extractedText.value.trim();
+
+
+    if (!text) {
+
+        alert(
+            "No extracted text is available."
+        );
+
+        return;
+    }
+
+
+    /*
+     * Use our existing OCR
+     * field extraction function
+     */
+
+    fillEmailFieldsFromOCR(text);
+
+
+    /*
+     * Show success message
+     */
+
+    const emailResult =
+        document.getElementById("emailResult");
+
+    if (emailResult) {
+
+        emailResult.innerHTML = `
+            <div class="recommend-card">
+
+                <h3>
+                    <i class="fa-solid fa-circle-check"></i>
+                    Email Information Updated
+                </h3>
+
+                <p>
+                    Sender, subject and email body
+                    have been filled from the screenshot.
+                </p>
+
+                <p>
+                    Please review the information
+                    and click <b>Analyze Email</b>.
+                </p>
+
+            </div>
+        `;
+    }
+
+
+    /*
+     * Scroll back to email fields
+     */
+
+    const emailDetails =
+        document.querySelector(".email-details");
+
+    if (emailDetails) {
+
+        emailDetails.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    }
+
+}
+
+
+/* ============================= */
+/* CLEAR OCR SECTION             */
+/* ============================= */
+
+function clearOcrSection() {
+
+    const screenshotInput =
+        document.getElementById(
+            "emailScreenshot"
+        );
+
+    const progress =
+        document.getElementById(
+            "ocrProgress"
+        );
+
+    const previewWrap =
+        document.getElementById(
+            "ocrPreviewWrap"
+        );
+
+    const previewImage =
+        document.getElementById(
+            "ocrPreviewImage"
+        );
+
+    const extractedText =
+        document.getElementById(
+            "ocrExtractedText"
+        );
+
+
+    /*
+     * Clear file
+     */
+
+    if (screenshotInput) {
+
+        screenshotInput.value = "";
+    }
+
+
+    /*
+     * Hide progress
+     */
+
+    if (progress) {
+
+        progress.style.display = "none";
+    }
+
+
+    /*
+     * Hide preview
+     */
+
+    if (previewWrap) {
+
+        previewWrap.style.display = "none";
+    }
+
+
+    /*
+     * Clear image
+     */
+
+    if (previewImage) {
+
+        previewImage.src = "";
+    }
+
+
+    /*
+     * Clear OCR text
+     */
+
+    if (extractedText) {
+
+        extractedText.value = "";
+    }
+
+}
+
+
+/* ============================= */
+/* OCR FIELD EXTRACTION          */
+/* ============================= */
+
+function fillEmailFieldsFromOCR(text) {
+
+    const fromField =
+        document.getElementById("emailFrom");
+
+    const subjectField =
+        document.getElementById("emailSubject");
+
+    const bodyField =
+        document.getElementById("emailInput");
+
+
+    /*
+     * ==========================================
+     * NORMALIZE OCR TEXT
+     * ==========================================
+     */
+
+    let cleanText = text
+        .replace(/\r/g, "")
+        .trim();
+
+
+    /*
+     * ==========================================
+     * EXTRACT SENDER EMAIL
+     * ==========================================
+     */
+
+    const emailMatch = cleanText.match(
+        /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i
+    );
+
+    let from = "";
+
+    if (emailMatch) {
+        from = emailMatch[0];
+    }
+
+
+    /*
+     * ==========================================
+     * EXTRACT SUBJECT
+     * ==========================================
+     */
+
+    let subject = "";
+
+    /*
+     * First try normal "Subject:" format
+     */
+
+    const subjectMatch = cleanText.match(
+        /subject\s*[:\-]?\s*([^\n]+)/i
+    );
+
+    if (subjectMatch) {
+
+        subject = subjectMatch[1]
+            .trim();
+
+    } else {
+
+        /*
+         * Gmail screenshot:
+         *
+         * OCR may produce:
+         *
+         * ©) Mies ® Urgent: Your Account
+         * Will Be Suspended inbox >
+         *
+         * So search directly for "Urgent:"
+         */
+
+        const urgentMatch = cleanText.match(
+            /(Urgent\s*:\s*[^\n]+)/i
+        );
+
+        if (urgentMatch) {
+
+            subject = urgentMatch[1]
+                .trim();
+
+        } else {
+
+            /*
+             * Other common subject patterns
+             */
+
+            const patterns = [
+                /([A-Z][^\n]*verification[^\n]*)/i,
+                /([A-Z][^\n]*security[^\n]*)/i,
+                /([A-Z][^\n]*suspended[^\n]*)/i,
+                /([A-Z][^\n]*password[^\n]*)/i,
+                /([A-Z][^\n]*account[^\n]*)/i
+            ];
+
+            for (const pattern of patterns) {
+
+                const match =
+                    cleanText.match(pattern);
+
+                if (match) {
+
+                    subject = match[1].trim();
+                    break;
+                }
+            }
+        }
+    }
+
+
+    /*
+     * ==========================================
+     * CLEAN SUBJECT
+     * ==========================================
+     */
+
+    subject = subject
+        .replace(/^[^A-Za-z0-9]+/, "")
+        .replace(/\s*(?:inbox|>|<)\s*$/i, "")
+        .trim();
+
+
+    /*
+     * ==========================================
+     * EXTRACT EMAIL BODY
+     * ==========================================
+     */
+
+    let body = cleanText;
+
+
+    /*
+     * Gmail screenshot OCR contains a lot of
+     * interface text before the actual message.
+     *
+     * Most emails have a greeting such as:
+     *
+     * Dear User,
+     * Hello,
+     * Hi,
+     * Dear Customer,
+     */
+
+    const greetingMatch = body.match(
+        /(?:Dear|Hello|Hi)\s+[A-Za-z][^\n]*/i
+    );
+
+    if (greetingMatch) {
+
+        body = body.substring(
+            greetingMatch.index
+        );
+    }
+
+
+    /*
+     * ==========================================
+     * REMOVE SENDER + SUBJECT
+     * ==========================================
+     */
+
+    if (from) {
+
+        body = body.replace(
+            from,
+            ""
+        );
+    }
+
+    if (subject) {
+
+        body = body.replace(
+            subject,
+            ""
+        );
+    }
+
+
+    /*
+     * ==========================================
+     * REMOVE COMMON GMAIL UI TEXT
+     * ==========================================
+     */
+
+    body = body
+        .replace(/Search mail/gi, "")
+        .replace(/Compose/gi, "")
+        .replace(/Inbox/gi, "")
+        .replace(/Starred/gi, "")
+        .replace(/Snoozed/gi, "")
+        .replace(/Sent/gi, "")
+        .replace(/Drafts/gi, "")
+        .replace(/More/gi, "")
+        .replace(/\bto me\b/gi, "")
+        .replace(/\bReply\b/gi, "")
+        .replace(/\bForward\b/gi, "")
+        .replace(/\b\d+\s+of\s+\d+\b/gi, "")
+        .replace(
+            /\b\d{1,2}:\d{2}\s*(?:AM|PM)?\b/gi,
+            ""
+        )
+        .replace(
+            /\(\d+\s*hours?\s*ago\)/gi,
+            ""
+        );
+
+
+    /*
+     * ==========================================
+     * REMOVE OCR GARBAGE LINES
+     * ==========================================
+     */
+
+    body = body
+        .split("\n")
+        .map(line => line.trim())
+        .filter(line => {
+
+            if (!line) {
+                return false;
+            }
+
+            /*
+             * Remove very short OCR garbage
+             */
+            if (line.length <= 2) {
+                return false;
+            }
+
+            /*
+             * Remove obvious Gmail UI garbage
+             */
+            if (/^[=<>@©®:;]+$/.test(line)) {
+                return false;
+            }
+
+            return true;
+        })
+        .join("\n")
+        .trim();
+
+
+    /*
+     * ==========================================
+     * FILL FORM
+     * ==========================================
+     */
+
+    if (fromField) {
+        fromField.value = from;
+    }
+
+    if (subjectField) {
+        subjectField.value = subject;
+    }
+
+    if (bodyField) {
+        bodyField.value = body;
+    }
+
+
+    /*
+     * ==========================================
+     * DEBUG
+     * ==========================================
+     */
+
+    console.log("========== OCR RESULT ==========");
+    console.log("FROM:", from);
+    console.log("SUBJECT:", subject);
+    console.log("BODY:", body);
+    console.log("================================");
+}
