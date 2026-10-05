@@ -71,7 +71,7 @@ class SSLChecker:
                         )
 
                     else:
-                       report["risk_score"] = 0
+                        report["risk_score"] = 0
 
                         report["security_level"] = "LOW"
 
