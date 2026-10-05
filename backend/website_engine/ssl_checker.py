@@ -61,7 +61,7 @@ class SSLChecker:
                         report["recommendations"].append("Do not trust this website.")
 
                     elif days_left < 30:
-                        report["risk_score"] = 60
+                        report["risk_score"] = 30
                         report["security_level"] = "MEDIUM"
                         report["warnings"].append(
                             "SSL certificate will expire soon."
@@ -71,8 +71,13 @@ class SSLChecker:
                         )
 
                     else:
-                        report["risk_score"] = 5
+                       report["risk_score"] = 0
+
                         report["security_level"] = "LOW"
+
+                        report["recommendations"].append(
+                            "SSL certificate is valid."
+                        )
 
         except Exception:
 
