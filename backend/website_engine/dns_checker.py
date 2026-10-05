@@ -50,7 +50,7 @@ class DNSChecker:
             report["warnings"].append("No MX Record found.")
 
         if len(ns_records) == 0:
-            report["risk_score"] += 20
+            
             report["warnings"].append("No Name Servers found.")
 
         if report["risk_score"] == 0:
